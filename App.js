@@ -1,19 +1,54 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import {
+    Button,
+    Text,
+    Input,
+    InputGroup,
+    Container,
+    Header,
+    Title,
+    Content,
+    Footer,
+    FooterTab,
+    Left,
+    Right,
+    Body,
+    Icon,
+    List,
+    ListItem,
+    Form,
+    Toast,
+    Subtitle
+} from 'native-base';
+
+import DeviceControl from "./components/DeviceControl";
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
+      <Container>
+          <Header>
+              <Left>
+                  <Button transparent>
+                      <Icon name='menu'/>
+                  </Button>
+              </Left>
+              <Body style={{flex: 3, flexDirection:'row', justifyContent:'center'}}>
+              <Right>
+                  <Title>Light Control Page</Title>
+              </Right>
+              </Body>
+          </Header>
+          <Content>
+              <DeviceControl/>
+          </Content>
+          <Footer>
+              <FooterTab>
+                  <Button full>
+                      <Text>About</Text>
+                  </Button>
+              </FooterTab>
+          </Footer>
+      </Container>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
