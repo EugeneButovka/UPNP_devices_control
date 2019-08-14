@@ -44,17 +44,27 @@
 *  ```
 * ---------------------------------------------------------------- */
 'use strict';
+/*
+var UPnPUtils = require('bundle');
+var EventEmitter = UPnPUtils.EventEmitter;
+var m_util = UPnPUtils.util;
+var m_dgram = UPnPUtils.dgram;
+var m_http = UPnPUtils.http;
+var m_url = UPnPUtils.url;
+var m_xml2js = require('react-native-xml2js');*/
+
+
+//var Buffer = require('buffer').Buffer;
+
+global.Buffer = global.Buffer || require('buffer').Buffer
+
 var EventEmitter = require("events").EventEmitter;
 var m_util = require("util");
 var m_dgram = require('dgram');
 var m_http = require('http');
 var m_url = require('url');
-var m_xml2js = null;
-try {
-    m_xml2js = require('xml2js');
-} catch(e) {
 
-}
+var m_xml2js = require('xml2js');
 
 var UPnPUtils = function() {
     this.MULTICAST_ADDR = '239.255.255.250';
@@ -219,7 +229,7 @@ UPnPUtils.prototype._postAction = function(ourl, soap_action, cookies, soap, cal
     }
     
     var req = m_http.request(post_opts, (res) => {
-        res.setEncoding('utf8');
+        //res.setEncoding('utf8');
         var xml = '';
         res.on('data', (chunk) => {
             xml += chunk;

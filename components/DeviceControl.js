@@ -5,58 +5,148 @@ import {
     Button,
     Card,
 } from "native-base";
-//import upnp from '../utilites/upnpUtils';
+import upnp from '../utilites/upnpUtils';
 
-/*class LightService {
+//import upnp from '../upnpUtils_bundle';
+
+class LightService {
     soap = '';
+    params = {};
     
-    constructor() {
-        soap += '<?xml version="1.0" encoding="utf-8"?>';
-        soap += '<s:Envelope';
-        soap += '  s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"';
-        soap += '  xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">';
-        soap += '  <s:Body>';
-        soap += '          <u:SetTarget xmlns:u="urn:schemas-upnp-org:service:SwitchPower:1">';
-        soap += '               <newTargetValue>1</newTargetValue>';
-        soap += '          </u:SetTarget>';
-        soap += '  </s:Body>';
-        soap += '</s:Envelope>';
-    }
-    
-    params = {
-        //'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
-        'url': 'http://192.168.1.149:60953/_urn-upnp-org-serviceId-SwitchPower.0001_control',
-        'soap': soap
-    };
-    
-    turnOnLight() {
-        upnp.invokeAction(params, (err, obj, xml, res) => {
-            if(err) {
+    setLightState(newState) {
+        this.soap =
+            `<?xml version="1.0" encoding="utf-8"?>
+            <s:Envelope
+                s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+                    <s:Body>
+                        <u:SetTarget xmlns:u="urn:schemas-upnp-org:service:SwitchPower:1">
+                            <newTargetValue>${newState}</newTargetValue>
+                        </u:SetTarget>
+                    </s:Body>
+            </s:Envelope>
+        `;
+        
+        this.params = {
+            //'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
+            'url': 'http://192.168.1.149:60460/_urn-upnp-org-serviceId-SwitchPower.0001_control',
+            'soap': this.soap
+        };
+        
+        upnp.invokeAction(this.params, (err, obj, xml, res) => {
+            if (err) {
                 console.log('[ERROR]');
                 console.dir(err);
             } else {
-                if(res['statusCode'] === 200) {
+                if (res['statusCode'] === 200) {
                     console.log('[SUCCESS]');
                 } else {
                     console.log('[ERROR]');
                 }
                 console.log('----------------------------------');
-                console.log(JSON.stringify(obj, null, '  '))
+                //console.log(JSON.stringify(obj, null, '  '))
             }
         });
     };
-    turnOffLight() {};
+    
+    
+    getLightState() {
+        this.soap =
+            `<?xml version="1.0" encoding="utf-8"?>
+            <s:Envelope
+                s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+                xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+                    <s:Body>
+                        <u:GetTarget xmlns:u="urn:schemas-upnp-org:service:SwitchPower:1" />
+                    </s:Body>
+            </s:Envelope>
+        `;
+        
+        this.params = {
+            //'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
+            'url': 'http://192.168.1.149:60460/_urn-upnp-org-serviceId-SwitchPower.0001_control',
+            'soap': this.soap
+        };
+        
+        //const invokeParams = this.params;
+    
+        return (new Promise((resolve, reject) => {
+            upnp.invokeAction(this.params, (err, obj, xml, res) => {
+                if (err) {
+                    console.log('[ERROR]');
+                    console.dir(err);
+                    reject(null);
+                } else {
+                    if (res['statusCode'] === 200) {
+                        console.log('[SUCCESS]');
+                        resolve(!!parseInt(obj["s:Body"]["u:GetTargetResponse"]["newTargetValue"]));
+                    } else {
+                        console.log('[ERROR]');
+                        reject(null);
+                    }
+                    console.log('----------------------------------');
+                    //console.log(JSON.stringify(obj, null, '  '))
+                }
+            });
+        }));
+    };
+}
 
-}*/
+
+class PlayerService {
+    soap = '';
+    params = {};
+    
+    constructor() {
+        this.soap += '<?xml version="1.0" encoding="utf-8"?>';
+        this.soap += '<s:Envelope';
+        this.soap += '  s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"';
+        this.soap += '  xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">';
+        this.soap += '  <s:Body>';
+        this.soap += '          <u:Next xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">';
+        this.soap += '               <InstanceID>0</InstanceID>';
+        this.soap += '          </u:Next>';
+        this.soap += '  </s:Body>';
+        this.soap += '</s:Envelope>';
+        
+        this.params = {
+            'url': 'http://192.168.1.149:1821/AVTransport/a1467806-f66a-2b56-9b3e-c00a7b7cbaa5/control.xml',
+            'soap': this.soap
+        };
+    }
+    
+    
+    nextTrack() {
+        upnp.invokeAction(this.params, (err, obj, xml, res) => {
+            if (err) {
+                console.log('[ERROR]');
+                console.dir(err);
+            } else {
+                if (res['statusCode'] === 200) {
+                    console.log('[SUCCESS]');
+                } else {
+                    console.log('[ERROR]');
+                }
+                console.log('----------------------------------');
+                //console.log(JSON.stringify(obj, null, '  '))
+            }
+        });
+    };
+    
+}
 
 
 export default class DeviceControl extends React.Component {
     state = {};
-    
-    //LightServiceLightService
+    lightControl = null;
+    player = null;
     
     constructor(props) {
         super(props);
+        
+        this.lightControl = new LightService;
+        this.player = new PlayerService;
+        
         this.state = {
             lightState: null
         };
@@ -67,27 +157,68 @@ export default class DeviceControl extends React.Component {
     }
     
     getLightState = async () => {
-        //-----
-        let result = false;
-        
+        const res = await this.lightControl.getLightState();
+        console.log('light state is now: ', res);
         
         this.setState({
-            lightState: result
+            lightState: res
         });
     };
+    
+    switchLight = () => {
+        const newLightState = !this.state.lightState;
+        this.lightControl.setLightState(newLightState);
+        this.setState({
+            lightState: newLightState
+        });
+    };
+    
+    gotoNextTrack = () => {
+        this.player.nextTrack();
+    };
+    
+    renderLightControl() {
+        //console.log('this.state.lightState', this.state.lightState);
+        return (
+            <React.Fragment>
+                <Card>
+                    <Text style={{
+                        alignSelf: "center",
+                        fontSize: 20
+                    }}>{`Light is ${this.state.lightState ? 'on' : 'off'}`}</Text>
+                </Card>
+                <Button block onPress={this.switchLight}>
+                    <Text>Switch</Text>
+                </Button>
+            </React.Fragment>
+        );
+    }
+    
+    
+    renderPlayerControl() {
+        return (
+            <React.Fragment>
+                <Card style={{marginTop: "20%"}}>
+                    <Text style={{
+                        alignSelf: "center",
+                        fontSize: 20
+                    }}>{"next track in upnp player"}</Text>
+                </Card>
+                <Button block onPress={this.gotoNextTrack}>
+                    <Text>Next</Text>
+                </Button>
+            </React.Fragment>
+        );
+    }
     
     
     render() {
         console.log('device control render');
-        console.log(this.state.lightState);
+        //console.log(this.state.lightState);
         return (
             <React.Fragment>
-                <Card>
-                    <Text style={{ alignSelf: "center", fontSize: 20 }}>{`Light is ${this.state.lightState ? 'on' : 'off'}`}</Text>
-                </Card>
-                <Button block>
-                    <Text>Switch</Text>
-                </Button>
+                {this.renderLightControl()}
+                {this.renderPlayerControl()}
             </React.Fragment>
         )
     }

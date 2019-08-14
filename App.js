@@ -34,7 +34,7 @@ export default function App() {
               </Left>
               <Body style={{flex: 3, flexDirection:'row', justifyContent:'center'}}>
               <Right>
-                  <Title>Light Control Page</Title>
+                  <Title>UPnP control Hub</Title>
               </Right>
               </Body>
           </Header>
