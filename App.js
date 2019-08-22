@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     Button,
     Text,
@@ -19,36 +19,41 @@ import {
     Form,
     Toast,
     Subtitle
-} from 'native-base';
+} from "native-base";
 
 import DeviceControl from "./components/DeviceControl";
 
 export default function App() {
-  return (
-      <Container>
-          <Header>
-              <Left>
-                  <Button transparent>
-                      <Icon name='menu'/>
-                  </Button>
-              </Left>
-              <Body style={{flex: 3, flexDirection:'row', justifyContent:'center'}}>
-              <Right>
-                  <Title>UPnP control Hub</Title>
-              </Right>
-              </Body>
-          </Header>
-          <Content>
-              <DeviceControl/>
-          </Content>
-          <Footer>
-              <FooterTab>
-                  <Button full>
-                      <Text>About</Text>
-                  </Button>
-              </FooterTab>
-          </Footer>
-      </Container>
-  );
+    return (
+        <Container>
+            <Header>
+                <Left>
+                    <Button transparent>
+                        <Icon name="menu" />
+                    </Button>
+                </Left>
+                <Body
+                    style={{
+                        flex: 3,
+                        flexDirection: "row",
+                        justifyContent: "center"
+                    }}
+                >
+                    <Right>
+                        <Title>UPnP control Hub!!</Title>
+                    </Right>
+                </Body>
+            </Header>
+            <Content>
+                <DeviceControl />
+            </Content>
+            <Footer>
+                <FooterTab>
+                    <Button full>
+                        <Text>About</Text>
+                    </Button>
+                </FooterTab>
+            </Footer>
+        </Container>
+    );
 }
-
