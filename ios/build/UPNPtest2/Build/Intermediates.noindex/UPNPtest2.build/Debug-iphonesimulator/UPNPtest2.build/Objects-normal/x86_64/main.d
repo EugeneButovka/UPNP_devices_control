@@ -1,0 +1,19 @@
+dependencies: \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/UPNPtest2/main.m \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/UPNPtest2/AppDelegate.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMReactNativeAdapter/UMModuleRegistryAdapter.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/React/React/RCTBridgeModule.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/React/React/RCTDefines.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/React/RCTInspectorDevServerHelper.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/React/RCTPackagerConnection.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMModuleRegistryProvider.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMModuleRegistry.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMInternalModule.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMDefines.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMExportedModule.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMViewManager.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMModuleRegistryDelegate.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMSingletonModule.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/React/React/RCTBridgeDelegate.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/React/React/RCTJavaScriptLoader.h \
+  /Users/sergeyfegon/Documents/WORK/JS_projects/UPNP_light_and_player_control/ios/Pods/Headers/Public/UMCore/UMAppDelegateWrapper.h
