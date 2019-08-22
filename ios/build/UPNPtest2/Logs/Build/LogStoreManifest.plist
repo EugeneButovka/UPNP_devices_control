@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>C36DEA00-2638-4E8B-B771-6ADEC6960FDA</key>
+		<key>C029ABB1-8701-4885-91D6-1C5294A6B9CB</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,7 +15,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>C36DEA00-2638-4E8B-B771-6ADEC6960FDA.xcactivitylog</string>
+			<string>C029ABB1-8701-4885-91D6-1C5294A6B9CB.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
@@ -30,13 +30,13 @@
 			<key>signature</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>588170781.36580098</real>
+			<real>588174190.26545095</real>
 			<key>timeStoppedRecording</key>
-			<real>588170782.07539105</real>
+			<real>588174191.28812301</real>
 			<key>title</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>C36DEA00-2638-4E8B-B771-6ADEC6960FDA</string>
+			<string>C029ABB1-8701-4885-91D6-1C5294A6B9CB</string>
 		</dict>
 	</dict>
 </dict>

@@ -30,4 +30,6 @@ target 'UPNPtest2' do
   pod 'RNReanimated', :podspec => '../node_modules/react-native-reanimated/RNReanimated.podspec'
 
   use_unimodules!
+  pod 'react-native-udp', :path => '../node_modules/react-native-udp'
+
 end

@@ -59,7 +59,7 @@ global.Buffer = global.Buffer || require("buffer").Buffer;
 
 var EventEmitter = require("events").EventEmitter;
 var m_util = require("util");
-var m_dgram = require("dgram");
+var m_dgram = require("react-native-udp");//require("dgram");
 var m_http = require("http");
 var m_url = require("url");
 
@@ -543,7 +543,7 @@ UPnPUtils.prototype._sendMsearch = function(callback) {
 UPnPUtils.prototype._fetchDeviceDescriptions = function(url, callback) {
     m_http
         .get(url, res => {
-            res.setEncoding("utf8");
+            //res.setEncoding("utf8");
             var xml = "";
             res.on("data", chunk => {
                 xml += chunk;

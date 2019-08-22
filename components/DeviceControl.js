@@ -153,7 +153,8 @@ export default class DeviceControl extends React.Component {
     }
 
     componentDidMount() {
-        this.getLightState();
+        //this.getLightState();
+        this.discoverDevices();
     }
 
     getLightState = async () => {
@@ -175,6 +176,27 @@ export default class DeviceControl extends React.Component {
 
     gotoNextTrack = () => {
         this.player.nextTrack();
+    };
+
+    discoverDevices = () => {
+        // Set an event listener for 'added' event
+        upnp.on("added", device => {
+            // This callback function will be called whenever an device was added.
+            var name = device["description"]["device"]["friendlyName"];
+            var addr = device["address"];
+            console.log("Added " + name + " (" + addr + ")");
+        });
+
+        // Set an event listener for 'deleted' event
+        upnp.on("deleted", device => {
+            // This callback function will be called whenever an device was deleted.
+            var name = device["description"]["device"]["friendlyName"];
+            var addr = device["address"];
+            console.log("Deleted " + name + " (" + addr + ")");
+        });
+
+        // Start the discovery process
+        upnp.startDiscovery();
     };
 
     renderLightControl() {
