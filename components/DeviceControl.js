@@ -25,7 +25,7 @@ class LightService {
         this.params = {
             //'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
             url:
-                "http://192.168.1.149:60460/_urn-upnp-org-serviceId-SwitchPower.0001_control",
+                "http://192.168.1.149:56419/_urn-upnp-org-serviceId-SwitchPower.0001_control",
             soap: this.soap
         };
 
@@ -59,7 +59,7 @@ class LightService {
         this.params = {
             //'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
             url:
-                "http://192.168.1.149:60460/_urn-upnp-org-serviceId-SwitchPower.0001_control",
+                "http://192.168.1.149:56419/_urn-upnp-org-serviceId-SwitchPower.0001_control",
             soap: this.soap
         };
 
@@ -113,7 +113,7 @@ class PlayerService {
 
         this.params = {
             url:
-                "http://192.168.1.149:1821/AVTransport/a1467806-f66a-2b56-9b3e-c00a7b7cbaa5/control.xml",
+                "http://192.168.1.149:1176/AVTransport/a1467806-f66a-2b56-9b3e-c00a7b7cbaa5/control.xml",
             soap: this.soap
         };
     }
