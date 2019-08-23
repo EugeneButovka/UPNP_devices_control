@@ -3,10 +3,11 @@ import { AppRegistry } from "react-native";
 import { Text, Button, Card } from "native-base";
 import upnp from "../utilites/upnpUtils";
 
-//import upnp from '../upnpUtils_bundle';
+// import upnp from '../upnpUtils_bundle';
 
 class LightService {
     soap = "";
+
     params = {};
 
     setLightState(newState) {
@@ -23,7 +24,7 @@ class LightService {
         `;
 
         this.params = {
-            //'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
+            // 'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
             url:
                 "http://192.168.1.149:56419/_urn-upnp-org-serviceId-SwitchPower.0001_control",
             soap: this.soap
@@ -34,13 +35,13 @@ class LightService {
                 console.log("[ERROR]");
                 console.dir(err);
             } else {
-                if (res["statusCode"] === 200) {
+                if (res.statusCode === 200) {
                     console.log("[SUCCESS]");
                 } else {
                     console.log("[ERROR]");
                 }
                 console.log("----------------------------------");
-                //console.log(JSON.stringify(obj, null, '  '))
+                // console.log(JSON.stringify(obj, null, '  '))
             }
         });
     }
@@ -57,13 +58,13 @@ class LightService {
         `;
 
         this.params = {
-            //'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
+            // 'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
             url:
                 "http://192.168.1.149:56419/_urn-upnp-org-serviceId-SwitchPower.0001_control",
             soap: this.soap
         };
 
-        //const invokeParams = this.params;
+        // const invokeParams = this.params;
 
         return new Promise((resolve, reject) => {
             upnp.invokeAction(this.params, (err, obj, xml, res) => {
@@ -72,13 +73,11 @@ class LightService {
                     console.dir(err);
                     reject(null);
                 } else {
-                    if (res["statusCode"] === 200) {
+                    if (res.statusCode === 200) {
                         console.log("[SUCCESS]");
                         resolve(
                             !!parseInt(
-                                obj["s:Body"]["u:GetTargetResponse"][
-                                    "newTargetValue"
-                                ]
+                                obj["s:Body"]["u:GetTargetResponse"].newTargetValue
                             )
                         );
                     } else {
@@ -86,7 +85,7 @@ class LightService {
                         reject(null);
                     }
                     console.log("----------------------------------");
-                    //console.log(JSON.stringify(obj, null, '  '))
+                    // console.log(JSON.stringify(obj, null, '  '))
                 }
             });
         });
@@ -95,6 +94,7 @@ class LightService {
 
 class PlayerService {
     soap = "";
+
     params = {};
 
     constructor() {
@@ -124,13 +124,13 @@ class PlayerService {
                 console.log("[ERROR]");
                 console.dir(err);
             } else {
-                if (res["statusCode"] === 200) {
+                if (res.statusCode === 200) {
                     console.log("[SUCCESS]");
                 } else {
                     console.log("[ERROR]");
                 }
                 console.log("----------------------------------");
-                //console.log(JSON.stringify(obj, null, '  '))
+                // console.log(JSON.stringify(obj, null, '  '))
             }
         });
     }
@@ -138,7 +138,9 @@ class PlayerService {
 
 export default class DeviceControl extends React.Component {
     state = {};
+
     lightControl = null;
+
     player = null;
 
     constructor(props) {
@@ -153,7 +155,7 @@ export default class DeviceControl extends React.Component {
     }
 
     componentDidMount() {
-        //this.getLightState();
+        // this.getLightState();
         this.discoverDevices();
     }
 
@@ -182,17 +184,18 @@ export default class DeviceControl extends React.Component {
         // Set an event listener for 'added' event
         upnp.on("added", device => {
             // This callback function will be called whenever an device was added.
-            var name = device["description"]["device"]["friendlyName"];
-            var addr = device["address"];
-            console.log("Added " + name + " (" + addr + ")");
+            const name = device.description.device.friendlyName;
+            const addr = device.address;
+            console.log(`Added ${  name  } (${  addr  })`);
+            console.log("Device ", device);
         });
 
         // Set an event listener for 'deleted' event
         upnp.on("deleted", device => {
             // This callback function will be called whenever an device was deleted.
-            var name = device["description"]["device"]["friendlyName"];
-            var addr = device["address"];
-            console.log("Deleted " + name + " (" + addr + ")");
+            const name = device.description.device.friendlyName;
+            const addr = device.address;
+            console.log(`Deleted ${  name  } (${  addr  })`);
         });
 
         // Start the discovery process
@@ -200,52 +203,54 @@ export default class DeviceControl extends React.Component {
     };
 
     renderLightControl() {
-        //console.log('this.state.lightState', this.state.lightState);
+        // console.log('this.state.lightState', this.state.lightState);
         return (
-            <React.Fragment>
-                <Card>
-                    <Text
-                        style={{
+          <>
+            <Card>
+              <Text
+                style={{
                             alignSelf: "center",
                             fontSize: 20
                         }}
-                    >{`Light is ${this.state.lightState ? "on" : "off"}`}</Text>
-                </Card>
-                <Button block onPress={this.switchLight}>
-                    <Text>Switch</Text>
-                </Button>
-            </React.Fragment>
+              >
+                {`Light is ${this.state.lightState ? "on" : "off"}`}
+              </Text>
+            </Card>
+            <Button block onPress={this.switchLight}>
+              <Text>Switch</Text>
+            </Button>
+          </>
         );
     }
 
     renderPlayerControl() {
         return (
-            <React.Fragment>
-                <Card style={{ marginTop: "20%" }}>
-                    <Text
-                        style={{
+          <>
+            <Card style={{ marginTop: "20%" }}>
+              <Text
+                style={{
                             alignSelf: "center",
                             fontSize: 20
                         }}
-                    >
-                        {"next track in upnp player"}
-                    </Text>
-                </Card>
-                <Button block onPress={this.gotoNextTrack}>
-                    <Text>Next</Text>
-                </Button>
-            </React.Fragment>
+              >
+                {"next track in upnp player"}
+              </Text>
+            </Card>
+            <Button block onPress={this.gotoNextTrack}>
+              <Text>Next</Text>
+            </Button>
+          </>
         );
     }
 
     render() {
         console.log("device control render");
-        //console.log(this.state.lightState);
+        // console.log(this.state.lightState);
         return (
-            <React.Fragment>
-                {this.renderLightControl()}
-                {this.renderPlayerControl()}
-            </React.Fragment>
+          <>
+            {this.renderLightControl()}
+            {this.renderPlayerControl()}
+          </>
         );
     }
 }

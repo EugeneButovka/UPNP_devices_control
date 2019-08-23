@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>7FD37123-CE89-4140-858C-DCD2FE198344</key>
+		<key>C70CFB18-5FC3-4AB7-8896-82282DDD15EA</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,7 +15,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>7FD37123-CE89-4140-858C-DCD2FE198344.xcactivitylog</string>
+			<string>C70CFB18-5FC3-4AB7-8896-82282DDD15EA.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
@@ -30,13 +30,45 @@
 			<key>signature</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>588242282.027897</real>
+			<real>588252486.32266295</real>
 			<key>timeStoppedRecording</key>
-			<real>588242297.51304603</real>
+			<real>588252487.30991399</real>
 			<key>title</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>7FD37123-CE89-4140-858C-DCD2FE198344</string>
+			<string>C70CFB18-5FC3-4AB7-8896-82282DDD15EA</string>
+		</dict>
+		<key>CD89C127-E090-47E4-B0EF-5D50FF0A6A91</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>CD89C127-E090-47E4-B0EF-5D50FF0A6A91.xcactivitylog</string>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>UPNPtest2 project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>UPNPtest2</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>588250627.79127395</real>
+			<key>timeStoppedRecording</key>
+			<real>588250628.55830598</real>
+			<key>title</key>
+			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>CD89C127-E090-47E4-B0EF-5D50FF0A6A91</string>
 		</dict>
 	</dict>
 </dict>

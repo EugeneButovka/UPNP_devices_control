@@ -43,7 +43,8 @@
  *  }, 15000);
  *  ```
  * ---------------------------------------------------------------- */
-"use strict";
+
+
 /*
 var UPnPUtils = require('bundle');
 var EventEmitter = UPnPUtils.EventEmitter;
@@ -51,21 +52,21 @@ var m_util = UPnPUtils.util;
 var m_dgram = UPnPUtils.dgram;
 var m_http = UPnPUtils.http;
 var m_url = UPnPUtils.url;
-var m_xml2js = require('react-native-xml2js');*/
+var m_xml2js = require('react-native-xml2js'); */
 
-//var Buffer = require('buffer').Buffer;
+// var Buffer = require('buffer').Buffer;
 
 global.Buffer = global.Buffer || require("buffer").Buffer;
 
-var EventEmitter = require("events").EventEmitter;
-var m_util = require("util");
-var m_dgram = require("dgram");
-var m_http = require("http");
-var m_url = require("url");
+const {EventEmitter} = require("events");
+const m_util = require("util");
+const m_dgram = require("dgram");
+const m_http = require("http");
+const m_url = require("url");
 
-var m_xml2js = require("xml2js");
+const m_xml2js = require("xml2js");
 
-var UPnPUtils = function() {
+const UPnPUtils = function() {
     this.MULTICAST_ADDR = "239.255.255.250";
     this.MULTICAST_PORT = 1900;
 
@@ -115,9 +116,9 @@ m_util.inherits(UPnPUtils, EventEmitter);
  *  N/A
  * ---------------------------------------------------------------- */
 UPnPUtils.prototype.getActiveDeviceList = function() {
-    var devices = JSON.parse(JSON.stringify(this.devices));
-    var list = [];
-    for (var k in devices) {
+    const devices = JSON.parse(JSON.stringify(this.devices));
+    const list = [];
+    for (const k in devices) {
         list.push(devices[k]);
     }
     return list;
@@ -162,10 +163,10 @@ UPnPUtils.prototype.invokeAction = function(params, callback) {
     if (typeof params !== "object") {
         throw new Error("The 1st argument must be an object.");
     }
-    var url = "url" in params ? params["url"] : null;
-    var soap = "soap" in params ? params["soap"] : null;
-    var action = "action" in params ? params["action"] : null;
-    var cookies = "cookies" in params ? params["cookies"] : null;
+    const url = "url" in params ? params.url : null;
+    const soap = "soap" in params ? params.soap : null;
+    const action = "action" in params ? params.action : null;
+    let cookies = "cookies" in params ? params.cookies : null;
 
     if (!url) {
         throw new Error('The value of "url" is required.');
@@ -173,8 +174,8 @@ UPnPUtils.prototype.invokeAction = function(params, callback) {
         throw new Error('The value of "url" is invalid. It must be a string.');
     }
 
-    var ourl = m_url.parse(url);
-    if (!ourl || !ourl["protocol"] || !ourl["slashes"] || !ourl["host"]) {
+    const ourl = m_url.parse(url);
+    if (!ourl || !ourl.protocol || !ourl.slashes || !ourl.host) {
         throw new Error('The value of "url" is invalid as a URL.');
     }
     if (!soap) {
@@ -225,7 +226,7 @@ UPnPUtils.prototype._postAction = function(
     soap,
     callback
 ) {
-    var post_opts = {
+    const post_opts = {
         protocol: ourl.protocol,
         hostname: ourl.hostname,
         port: ourl.port || 80,
@@ -237,21 +238,21 @@ UPnPUtils.prototype._postAction = function(
         }
     };
     if (soap_action) {
-        post_opts["headers"]["SOAPAction"] = soap_action;
+        post_opts.headers.SOAPAction = soap_action;
     }
     if (cookies) {
-        post_opts["headers"]["Cookie"] = cookies;
+        post_opts.headers.Cookie = cookies;
     }
 
-    var req = m_http.request(post_opts, res => {
-        //res.setEncoding('utf8');
-        var xml = "";
+    const req = m_http.request(post_opts, res => {
+        // res.setEncoding('utf8');
+        let xml = "";
         res.on("data", chunk => {
             xml += chunk;
         });
         res.on("end", () => {
             if (m_xml2js) {
-                var opt = { explicitRoot: false, explicitArray: false };
+                const opt = { explicitRoot: false, explicitArray: false };
                 m_xml2js.parseString(xml, opt, (err, obj) => {
                     if (err) {
                         callback(null, null, xml, res);
@@ -275,31 +276,31 @@ UPnPUtils.prototype._getSoapActionFromSoapBody = function(soap, callback) {
     if (!m_xml2js) {
         return callback("");
     }
-    var opt = { explicitRoot: false, explicitArray: false };
+    const opt = { explicitRoot: false, explicitArray: false };
     m_xml2js.parseString(soap, opt, (err, obj) => {
         if (err) {
             return callback("");
-        } else {
-            var sbody = obj["s:Body"];
+        } 
+            const sbody = obj["s:Body"];
             if (!sbody) {
                 return callback("");
             }
-            for (var k in sbody) {
+            for (const k in sbody) {
                 if (
                     k.match(/^u\:/) &&
                     sbody[k] &&
-                    sbody[k]["$"] &&
-                    sbody[k]["$"]["xmlns:u"]
+                    sbody[k].$ &&
+                    sbody[k].$["xmlns:u"]
                 ) {
-                    var m_action = k.match(/^u\:(.+)/);
-                    var action = m_action[1];
-                    var urn = sbody[k]["$"]["xmlns:u"];
-                    var soap_action = urn + "#" + action;
+                    const m_action = k.match(/^u\:(.+)/);
+                    const action = m_action[1];
+                    const urn = sbody[k].$["xmlns:u"];
+                    const soap_action = `${urn  }#${  action}`;
                     callback(soap_action);
                     break;
                 }
             }
-        }
+        
     });
 };
 
@@ -347,8 +348,8 @@ UPnPUtils.prototype.startDiscovery = function(params) {
     if (typeof params !== "object") {
         throw new Error("The 1st argument must be an object.");
     }
-    var mx = "mx" in params ? params["mx"] : this.params_default["mx"];
-    var st = "st" in params ? params["st"] : this.params_default["st"];
+    const mx = "mx" in params ? params.mx : this.params_default.mx;
+    const st = "st" in params ? params.st : this.params_default.st;
     if (typeof mx !== "number" || mx < 1 || mx > 120 || mx % 1 !== 0) {
         throw new Error(
             'The value of "mx" is invalid. It must be an integer between 1 and 120.'
@@ -357,8 +358,8 @@ UPnPUtils.prototype.startDiscovery = function(params) {
     if (typeof st !== "string") {
         throw new Error('The value of "st" is invalid. It must be string.');
     }
-    this.params["mx"] = mx;
-    this.params["st"] = st;
+    this.params.mx = mx;
+    this.params.st = st;
 
     this.devices = {};
     this.discovery_started = true;
@@ -373,15 +374,15 @@ UPnPUtils.prototype.startDiscovery = function(params) {
 };
 
 UPnPUtils.prototype._startMsearch = function(callback) {
-    var num_max = this.params["msearch_retry"];
-    var num = 0;
+    const num_max = this.params.msearch_retry;
+    let num = 0;
     (function send() {
         this._sendMsearch(() => {
             num++;
             if (num < num_max) {
                 this.msearch_timer = setTimeout(() => {
                     send.call(this);
-                }, (this.params["mx"] + 1) * 1000);
+                }, (this.params.mx + 1) * 1000);
             } else {
                 this.msearch_timer = null;
                 callback();
@@ -391,8 +392,8 @@ UPnPUtils.prototype._startMsearch = function(callback) {
 };
 
 UPnPUtils.prototype._prepareMulticastUdpSocket = function(callback) {
-    this.sockets["multicast"] = m_dgram.createSocket("udp4");
-    var sock = this.sockets["multicast"];
+    this.sockets.multicast = m_dgram.createSocket("udp4");
+    const sock = this.sockets.multicast;
 
     sock.on("message", (buffer, rinfo) => {
         this._udpSocketListener(buffer, rinfo);
@@ -411,8 +412,8 @@ UPnPUtils.prototype._prepareMulticastUdpSocket = function(callback) {
 };
 
 UPnPUtils.prototype._prepareUnicastUdpSocket = function(callback) {
-    this.sockets["unicast"] = m_dgram.createSocket("udp4");
-    var sock = this.sockets["unicast"];
+    this.sockets.unicast = m_dgram.createSocket("udp4");
+    const sock = this.sockets.unicast;
 
     sock.on("message", (buffer, rinfo) => {
         this._udpSocketListener(buffer, rinfo);
@@ -430,18 +431,18 @@ UPnPUtils.prototype._prepareUnicastUdpSocket = function(callback) {
 };
 
 UPnPUtils.prototype._udpSocketListener = function(buffer, rinfo) {
-    var text = buffer.toString("UTF-8");
+    const text = buffer.toString("UTF-8");
     if (text.match(/^M\-SEARCH/)) {
         return;
     }
 
-    var headers = this._parseSdpResponseHeader(text);
-    if (!headers || !headers["USN"]) {
+    const headers = this._parseSdpResponseHeader(text);
+    if (!headers || !headers.USN) {
         return;
     }
 
-    var max_age = 1800;
-    var m = null;
+    let max_age = 1800;
+    let m = null;
     if (headers["CACHE-CONTROL"]) {
         m = headers["CACHE-CONTROL"].match(/max\-age\=(\d+)/);
     }
@@ -451,45 +452,45 @@ UPnPUtils.prototype._udpSocketListener = function(buffer, rinfo) {
         max_age = 0;
     }
 
-    var loc = headers["LOCATION"];
-    var usn = headers["USN"];
-    var nts = headers["NTS"];
-    var nt = headers["NT"];
-    var now = Date.now();
-    var expire = now + max_age * 1000;
+    const loc = headers.LOCATION;
+    const usn = headers.USN;
+    const nts = headers.NTS;
+    const nt = headers.NT;
+    const now = Date.now();
+    const expire = now + max_age * 1000;
 
-    if (headers["$"].match(/^HTTP\/[\d\.]+\s+200\s+OK/)) {
+    if (headers.$.match(/^HTTP\/[\d\.]+\s+200\s+OK/)) {
         if (!this.devices[usn]) {
             this.devices[usn] = {
                 address: rinfo.address,
-                headers: headers,
-                expire: expire
+                headers,
+                expire
             };
             this._fetchDeviceDescriptions(loc, (xml, obj) => {
-                this.devices[usn]["description"] = obj;
-                this.devices[usn]["descriptionXML"] = xml;
+                this.devices[usn].description = obj;
+                this.devices[usn].descriptionXML = xml;
                 this.emit(
                     "added",
                     JSON.parse(JSON.stringify(this.devices[usn]))
                 );
             });
         }
-    } else if (headers["$"].match(/^NOTIFY/)) {
+    } else if (headers.$.match(/^NOTIFY/)) {
         if (!nt) {
             return;
         }
-        if (nts === "ssdp:alive" && nt === this.params["st"]) {
+        if (nts === "ssdp:alive" && nt === this.params.st) {
             if (this.devices[usn]) {
-                this.devices[usn]["expire"] = expire;
+                this.devices[usn].expire = expire;
             } else {
                 this.devices[usn] = {
                     address: rinfo.address,
-                    headers: headers,
-                    expire: expire
+                    headers,
+                    expire
                 };
                 this._fetchDeviceDescriptions(loc, (xml, obj) => {
-                    this.devices[usn]["description"] = obj;
-                    this.devices[usn]["descriptionXML"] = xml;
+                    this.devices[usn].description = obj;
+                    this.devices[usn].descriptionXML = xml;
                     this.emit(
                         "added",
                         JSON.parse(JSON.stringify(this.devices[usn]))
@@ -509,16 +510,16 @@ UPnPUtils.prototype._udpSocketListener = function(buffer, rinfo) {
 };
 
 UPnPUtils.prototype._sendMsearch = function(callback) {
-    var ssdp_string = "";
+    let ssdp_string = "";
     ssdp_string += "M-SEARCH * HTTP/1.1\r\n";
     ssdp_string +=
-        "HOST: " + this.MULTICAST_ADDR + ":" + this.MULTICAST_PORT + "\r\n";
-    ssdp_string += "ST: " + this.params["st"] + "\r\n";
+        `HOST: ${  this.MULTICAST_ADDR  }:${  this.MULTICAST_PORT  }\r\n`;
+    ssdp_string += `ST: ${  this.params.st  }\r\n`;
     ssdp_string += 'MAN: "ssdp:discover"\r\n';
-    ssdp_string += "MX: " + this.params["mx"] + "\r\n";
+    ssdp_string += `MX: ${  this.params.mx  }\r\n`;
     ssdp_string += "\r\n";
-    var ssdp = new Buffer(ssdp_string, "utf8");
-    var sock = this.sockets["unicast"];
+    const ssdp = new Buffer(ssdp_string, "utf8");
+    const sock = this.sockets.unicast;
     if (!sock) {
         this.emit("error", new Error("udp is null."));
     }
@@ -543,14 +544,14 @@ UPnPUtils.prototype._sendMsearch = function(callback) {
 UPnPUtils.prototype._fetchDeviceDescriptions = function(url, callback) {
     m_http
         .get(url, res => {
-            //res.setEncoding("utf8");
-            var xml = "";
+            // res.setEncoding("utf8");
+            let xml = "";
             res.on("data", chunk => {
                 xml += chunk;
             });
             res.on("end", () => {
                 if (m_xml2js) {
-                    var opts = { explicitRoot: false, explicitArray: false };
+                    const opts = { explicitRoot: false, explicitArray: false };
                     m_xml2js.parseString(xml, opts, (err, obj) => {
                         callback(xml, obj);
                     });
@@ -565,17 +566,17 @@ UPnPUtils.prototype._fetchDeviceDescriptions = function(url, callback) {
 };
 
 UPnPUtils.prototype._parseSdpResponseHeader = function(text) {
-    var lines = text.split("\r\n");
-    var first = lines.shift();
+    const lines = text.split("\r\n");
+    const first = lines.shift();
     if (!first.match(/^(NOTIFY|HTTP)/)) {
         return null;
     }
-    var h = {};
-    h["$"] = first;
+    const h = {};
+    h.$ = first;
     lines.forEach(ln => {
-        var m = ln.match(/^([^\:\s\t]+)[\s\t]*\:[\s\t]*(.+)/);
+        const m = ln.match(/^([^\:\s\t]+)[\s\t]*\:[\s\t]*(.+)/);
         if (m) {
-            var k = m[1].toUpperCase();
+            const k = m[1].toUpperCase();
             h[k] = m[2];
         }
     });
@@ -597,10 +598,10 @@ UPnPUtils.prototype._stopCheckExpiration = function() {
 };
 
 UPnPUtils.prototype._checkExpiration = function() {
-    var now = Date.now();
-    for (var k in this.devices) {
-        if (this.devices[k]["expire"] < now) {
-            var device = JSON.parse(JSON.stringify(this.devices[k]));
+    const now = Date.now();
+    for (const k in this.devices) {
+        if (this.devices[k].expire < now) {
+            const device = JSON.parse(JSON.stringify(this.devices[k]));
             delete this.devices[k];
             this.emit("deleted", device);
         }
@@ -631,10 +632,10 @@ UPnPUtils.prototype.stopDiscovery = function(callback) {
             clearTimeout(this.msearch_timer);
         }
         this._stopCheckExpiration();
-        this.sockets["multicast"].close(() => {
-            this.sockets["unicast"].close(() => {
-                this.sockets["multicast"] = null;
-                this.sockets["unicast"] = null;
+        this.sockets.multicast.close(() => {
+            this.sockets.unicast.close(() => {
+                this.sockets.multicast = null;
+                this.sockets.unicast = null;
                 this.discovery_started = false;
                 callback();
             });
