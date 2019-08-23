@@ -3,7 +3,7 @@
 
 node_modules/
 build/
-ios/build
+ios/build/
 
 .expo/*
 npm-debug.*
