@@ -510,6 +510,7 @@ UPnPUtils.prototype._udpSocketListener = function(buffer, rinfo) {
 };
 
 UPnPUtils.prototype._sendMsearch = function(callback) {
+    console.log('msearch send');
     let ssdp_string = "";
     ssdp_string += "M-SEARCH * HTTP/1.1\r\n";
     ssdp_string +=

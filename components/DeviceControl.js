@@ -1,17 +1,20 @@
 import React from "react";
 import { AppRegistry } from "react-native";
-import { Text, Button, Card } from "native-base";
+import { Text, Button, Card, Picker, Icon } from "native-base";
 import upnp from "../utilites/upnpUtils";
 
 // import upnp from '../upnpUtils_bundle';
 
 class LightService {
-    soap = "";
+    networkAddress = "";
+    switchControlSubAddress = "_urn-upnp-org-serviceId-SwitchPower.0001_control";
 
-    params = {};
+    constructor(networkAddress) {
+        this.networkAddress = networkAddress;
+    }
 
     setLightState(newState) {
-        this.soap = `<?xml version="1.0" encoding="utf-8"?>
+        const soap = `<?xml version="1.0" encoding="utf-8"?>
             <s:Envelope
                 s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
                 xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
@@ -23,14 +26,16 @@ class LightService {
             </s:Envelope>
         `;
 
-        this.params = {
+        const params = {
             // 'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
-            url:
-                "http://192.168.1.149:56419/_urn-upnp-org-serviceId-SwitchPower.0001_control",
-            soap: this.soap
+            // url: "http://192.168.1.149:56419/_urn-upnp-org-serviceId-SwitchPower.0001_control",
+            url: this.networkAddress + '/' + this.switchControlSubAddress,
+            soap: soap
         };
 
-        upnp.invokeAction(this.params, (err, obj, xml, res) => {
+        console.log('set light state, url: ', params.url)
+
+        upnp.invokeAction(params, (err, obj, xml, res) => {
             if (err) {
                 console.log("[ERROR]");
                 console.dir(err);
@@ -47,7 +52,7 @@ class LightService {
     }
 
     getLightState() {
-        this.soap = `<?xml version="1.0" encoding="utf-8"?>
+        const soap = `<?xml version="1.0" encoding="utf-8"?>
             <s:Envelope
                 s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
                 xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
@@ -57,17 +62,15 @@ class LightService {
             </s:Envelope>
         `;
 
-        this.params = {
-            // 'url': 'http://192.168.1.149:60953/DimmableLight/SwitchPower.0001/control',
-            url:
-                "http://192.168.1.149:56419/_urn-upnp-org-serviceId-SwitchPower.0001_control",
-            soap: this.soap
+        const params = {
+            url: this.networkAddress + '/' + this.switchControlSubAddress,
+            soap: soap
         };
 
         // const invokeParams = this.params;
 
         return new Promise((resolve, reject) => {
-            upnp.invokeAction(this.params, (err, obj, xml, res) => {
+            upnp.invokeAction(params, (err, obj, xml, res) => {
                 if (err) {
                     console.log("[ERROR]");
                     console.dir(err);
@@ -139,14 +142,17 @@ class PlayerService {
 export default class DeviceControl extends React.Component {
     state = {};
 
-    lightControl = null;
+    currentLightControl = null;
+    currentLightDeviceNumber = null;
+
+    lightDevices = [];
 
     player = null;
 
     constructor(props) {
         super(props);
 
-        this.lightControl = new LightService();
+        //this.currentLightControl = new LightService();
         this.player = new PlayerService();
 
         this.state = {
@@ -155,12 +161,35 @@ export default class DeviceControl extends React.Component {
     }
 
     componentDidMount() {
-        // this.getLightState();
+        //this.getLightState();
         this.discoverDevices();
     }
 
+    getDeviceType(device) {
+        //"urn:schemas-upnp-org:device:DimmableLight:1";
+        
+        const deviceTypeExpanded = device.description.device.deviceType
+        const deviceType = deviceTypeExpanded.substring(
+            deviceTypeExpanded.lastIndexOf("device:") + "device:".length, 
+            deviceTypeExpanded.lastIndexOf(":")
+        );;
+        console.log('deviceType', deviceType);
+        return deviceType;
+    }
+
+    getDeviceNetworkAddress(device) {
+        //console.log('try get device network address', device);
+        const str = device.headers.LOCATION.match(/^(http|https)[\s\S]+(?=\/)/i)[0];
+        console.log('LOCATION', str);
+        return str;
+    }
+
+    isLightDevice = (device) => {
+        return (this.getDeviceType(device) == 'DimmableLight');
+    }
+
     getLightState = async () => {
-        const res = await this.lightControl.getLightState();
+        const res = await this.currentLightControl.getLightState();
         console.log("light state is now: ", res);
 
         this.setState({
@@ -170,11 +199,15 @@ export default class DeviceControl extends React.Component {
 
     switchLight = () => {
         const newLightState = !this.state.lightState;
-        this.lightControl.setLightState(newLightState);
+        this.currentLightControl.setLightState(newLightState);
         this.setState({
             lightState: newLightState
         });
     };
+
+    onLightSelect = (lightName, i) => {
+        console.log(lightName, i);
+    }
 
     gotoNextTrack = () => {
         this.player.nextTrack();
@@ -187,25 +220,95 @@ export default class DeviceControl extends React.Component {
             const name = device.description.device.friendlyName;
             const addr = device.address;
             console.log(`Added ${  name  } (${  addr  })`);
-            console.log("Device ", device);
+            //console.log("Device ", device);
+
+            //this.getDeviceType(device);
+            //this.getDeviceNetworkAddress(device);
+
+            if (this.isLightDevice(device)){
+                console.log('found light device');
+                this.lightDevices.push(device);
+                if (this.currentLightDeviceNumber == null) {
+                    this.currentLightControl = new LightService(this.getDeviceNetworkAddress(device));
+                    currentLightDeviceNumber = this.lightDevices.length - 1;
+                }
+            }                
         });
+
 
         // Set an event listener for 'deleted' event
         upnp.on("deleted", device => {
+            //TODO: add deletion of devices from local arrays
             // This callback function will be called whenever an device was deleted.
             const name = device.description.device.friendlyName;
             const addr = device.address;
             console.log(`Deleted ${  name  } (${  addr  })`);
         });
 
+
+        upnp.on("error", err => {console.log('err', err)});
+
         // Start the discovery process
         upnp.startDiscovery();
     };
 
-    renderLightControl() {
+    renderLightDevicePicker() {
+        //console.log('lightDevices', this.lightDevices);
+        return (
+            // <Picker
+            //   mode="dropdown"
+            //   placeholder="Select One"
+            //   placeholderStyle={{ color: "#2874F0" }}
+            //   note={false}
+            // //   selectedValue={"none available"}
+            // //   onValueChange={this.onLightSelect}
+            // >
+            //    {/* {this.lightDevices.map((device, i) => (<Picker.Item label={device.description.device.friendlyName} value={i} />))} */}
+            //    {/* <Picker.Item label={"friendlyName"} value={"12"} />
+            //    <Picker.Item label={"friendlyName2"} value={"13"} />  */}
+            //    <Picker.Item label={"friendlyName2"} value="0" />
+            // </Picker>
+
+<Picker
+mode="dropdown"
+iosIcon={<Icon name="arrow-down" />}
+placeholder="Select your SIM"
+placeholderStyle={{ color: "#bfc6ea" }}
+placeholderIconColor="#007aff"
+style={{ width: undefined }}
+>
+<Picker.Item label="Wallet" value="key0" />
+<Picker.Item label="ATM Card" value="key1" />
+<Picker.Item label="Debit Card" value="key2" />
+<Picker.Item label="Credit Card" value="key3" />
+<Picker.Item label="Net Banking" value="key4" />
+{/* <Picker.Item label={"friendlyName2"} value="0" /> */}
+{this.lightDevices.map((device, i) => (<Picker.Item label={device.description.device.friendlyName} value="1" />))}
+</Picker>
+        );
+    }
+
+    renderCurrentLightControl() {
         // console.log('this.state.lightState', this.state.lightState);
         return (
-          <>
+          <React.Fragment>
+            
+            {this.renderLightDevicePicker()}
+            {/* <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              placeholder="Select your SIM"
+              placeholderStyle={{ color: "#bfc6ea" }}
+              placeholderIconColor="#007aff"
+              style={{ width: undefined }}
+            >
+              <Picker.Item label="Wallet" value="key0" />
+              <Picker.Item label="ATM Card" value="key1" />
+              <Picker.Item label="Debit Card" value="key2" />
+              <Picker.Item label="Credit Card" value="key3" />
+              <Picker.Item label="Net Banking" value="key4" />
+            </Picker> */}
+            
             <Card>
               <Text
                 style={{
@@ -219,7 +322,7 @@ export default class DeviceControl extends React.Component {
             <Button block onPress={this.switchLight}>
               <Text>Switch</Text>
             </Button>
-          </>
+          </React.Fragment>
         );
     }
 
@@ -248,7 +351,7 @@ export default class DeviceControl extends React.Component {
         // console.log(this.state.lightState);
         return (
           <>
-            {this.renderLightControl()}
+            {this.renderCurrentLightControl()}
             {this.renderPlayerControl()}
           </>
         );
