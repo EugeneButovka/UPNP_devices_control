@@ -1,6 +1,6 @@
 import React from "react";
 import { AppRegistry } from "react-native";
-import { Text, Button, Card, Picker, Icon } from "native-base";
+import { Text, Button, Card, Picker, Icon, Item } from "native-base";
 import upnp from "../utilites/upnpUtils";
 
 // import upnp from '../upnpUtils_bundle';
@@ -78,6 +78,7 @@ class LightService {
                 } else {
                     if (res.statusCode === 200) {
                         console.log("[SUCCESS]");
+                        //console.log('light state', obj["s:Body"]["u:GetTargetResponse"]);
                         resolve(
                             !!parseInt(
                                 obj["s:Body"]["u:GetTargetResponse"].newTargetValue
@@ -140,23 +141,33 @@ class PlayerService {
 }
 
 export default class DeviceControl extends React.Component {
-    state = {};
+    state = {
 
-    currentLightControl = null;
-    currentLightDeviceNumber = null;
+    currentLightControl: null,
+    // currentLightDeviceNumber: null,
+    lightState: null,
 
-    lightDevices = [];
+    lightDevices: ["1", "2", "3"],
+    pickerSelectedValue: null,
 
-    player = null;
+    player: null
+
+    };
 
     constructor(props) {
         super(props);
 
-        //this.currentLightControl = new LightService();
         this.player = new PlayerService();
 
         this.state = {
-            lightState: null
+            currentLightControl: null,
+            // currentLightDeviceNumber: null,
+            lightState: null,
+        
+            lightDevices: [],//["1", "2", "3"],
+            pickerSelectedValue: null,
+        
+            player: null
         };
     }
 
@@ -172,7 +183,7 @@ export default class DeviceControl extends React.Component {
         const deviceType = deviceTypeExpanded.substring(
             deviceTypeExpanded.lastIndexOf("device:") + "device:".length, 
             deviceTypeExpanded.lastIndexOf(":")
-        );;
+        );
         console.log('deviceType', deviceType);
         return deviceType;
     }
@@ -185,11 +196,11 @@ export default class DeviceControl extends React.Component {
     }
 
     isLightDevice = (device) => {
-        return (this.getDeviceType(device) == 'DimmableLight');
+        return (this.getDeviceType(device) === 'DimmableLight');
     }
 
     getLightState = async () => {
-        const res = await this.currentLightControl.getLightState();
+        const res = await this.state.currentLightControl.getLightState();
         console.log("light state is now: ", res);
 
         this.setState({
@@ -197,16 +208,30 @@ export default class DeviceControl extends React.Component {
         });
     };
 
+    setCurrentLightControl = (device) => {
+        this.setState({
+            currentLightControl: new LightService(this.getDeviceNetworkAddress(device))
+        });
+        this.getLightState();
+    }
+
     switchLight = () => {
         const newLightState = !this.state.lightState;
-        this.currentLightControl.setLightState(newLightState);
+        this.state.currentLightControl.setLightState(newLightState);
         this.setState({
             lightState: newLightState
         });
     };
 
-    onLightSelect = (lightName, i) => {
-        console.log(lightName, i);
+    onLightSelectValue = (value) => {
+        //values of Picer items are unique devices .LOCATIONs
+        const devices = this.state.lightDevices.filter((device) => device.headers.LOCATION === value);
+        console.log('devices', devices);
+        const device = devices[0];
+        this.setState({
+            pickerSelectedValue:device.headers.LOCATION
+        });
+        this.setCurrentLightControl(device);
     }
 
     gotoNextTrack = () => {
@@ -220,17 +245,17 @@ export default class DeviceControl extends React.Component {
             const name = device.description.device.friendlyName;
             const addr = device.address;
             console.log(`Added ${  name  } (${  addr  })`);
-            //console.log("Device ", device);
-
-            //this.getDeviceType(device);
-            //this.getDeviceNetworkAddress(device);
 
             if (this.isLightDevice(device)){
                 console.log('found light device');
-                this.lightDevices.push(device);
-                if (this.currentLightDeviceNumber == null) {
-                    this.currentLightControl = new LightService(this.getDeviceNetworkAddress(device));
-                    currentLightDeviceNumber = this.lightDevices.length - 1;
+                this.setState({lightDevices: [...this.state.lightDevices,device]});
+                //console.log('light devices list', this.state.lightDevices);
+                //if no light device is in Picker => first discovered light device, set it to Picker
+                if (this.state.pickerSelectedValue === null) {
+                    this.setState({
+                        pickerSelectedValue:device.headers.LOCATION
+                    });
+                    this.setCurrentLightControl(device);
                 }
             }                
         });
@@ -254,61 +279,33 @@ export default class DeviceControl extends React.Component {
 
     renderLightDevicePicker() {
         //console.log('lightDevices', this.lightDevices);
+        //console.log('this.lightDevices', this.lightDevices);
         return (
-            // <Picker
-            //   mode="dropdown"
-            //   placeholder="Select One"
-            //   placeholderStyle={{ color: "#2874F0" }}
-            //   note={false}
-            // //   selectedValue={"none available"}
-            // //   onValueChange={this.onLightSelect}
-            // >
-            //    {/* {this.lightDevices.map((device, i) => (<Picker.Item label={device.description.device.friendlyName} value={i} />))} */}
-            //    {/* <Picker.Item label={"friendlyName"} value={"12"} />
-            //    <Picker.Item label={"friendlyName2"} value={"13"} />  */}
-            //    <Picker.Item label={"friendlyName2"} value="0" />
-            // </Picker>
-
-<Picker
-mode="dropdown"
-iosIcon={<Icon name="arrow-down" />}
-placeholder="Select your SIM"
-placeholderStyle={{ color: "#bfc6ea" }}
-placeholderIconColor="#007aff"
-style={{ width: undefined }}
->
-<Picker.Item label="Wallet" value="key0" />
-<Picker.Item label="ATM Card" value="key1" />
-<Picker.Item label="Debit Card" value="key2" />
-<Picker.Item label="Credit Card" value="key3" />
-<Picker.Item label="Net Banking" value="key4" />
-{/* <Picker.Item label={"friendlyName2"} value="0" /> */}
-{this.lightDevices.map((device, i) => (<Picker.Item label={device.description.device.friendlyName} value="1" />))}
-</Picker>
+            <Picker
+              mode="dropdown"
+              placeholder="Select Light to control"
+              placeholderStyle={{ color: "#2874F0" }}
+              note={false}
+               selectedValue={this.state.pickerSelectedValue}
+               onValueChange={this.onLightSelectValue}
+            >
+               {this.state.lightDevices.map((device, i) => {
+                    //console.log('device :', device);
+                    return <Picker.Item label={device.description.device.friendlyName+':'+device.headers.LOCATION} value={device.headers.LOCATION} key={i} />
+                    //return <Picker.Item label={"device.description.device.friendlyName"} value={"device.headers.USN"} />
+               })}
+            </Picker>
         );
     }
 
+               /* */
     renderCurrentLightControl() {
         // console.log('this.state.lightState', this.state.lightState);
+        //this.getLightState();
         return (
-          <React.Fragment>
-            
-            {this.renderLightDevicePicker()}
-            {/* <Picker
-              mode="dropdown"
-              iosIcon={<Icon name="arrow-down" />}
-              placeholder="Select your SIM"
-              placeholderStyle={{ color: "#bfc6ea" }}
-              placeholderIconColor="#007aff"
-              style={{ width: undefined }}
-            >
-              <Picker.Item label="Wallet" value="key0" />
-              <Picker.Item label="ATM Card" value="key1" />
-              <Picker.Item label="Debit Card" value="key2" />
-              <Picker.Item label="Credit Card" value="key3" />
-              <Picker.Item label="Net Banking" value="key4" />
-            </Picker> */}
-            
+            <React.Fragment>
+            {this.renderLightDevicePicker()}          
+
             <Card>
               <Text
                 style={{
@@ -322,13 +319,14 @@ style={{ width: undefined }}
             <Button block onPress={this.switchLight}>
               <Text>Switch</Text>
             </Button>
-          </React.Fragment>
+ 
+            </React.Fragment>
         );
     }
 
     renderPlayerControl() {
         return (
-          <>
+          <React.Fragment>
             <Card style={{ marginTop: "20%" }}>
               <Text
                 style={{
@@ -342,7 +340,7 @@ style={{ width: undefined }}
             <Button block onPress={this.gotoNextTrack}>
               <Text>Next</Text>
             </Button>
-          </>
+          </React.Fragment>
         );
     }
 
@@ -350,10 +348,10 @@ style={{ width: undefined }}
         console.log("device control render");
         // console.log(this.state.lightState);
         return (
-          <>
+          <React.Fragment>
             {this.renderCurrentLightControl()}
             {this.renderPlayerControl()}
-          </>
+          </React.Fragment>
         );
     }
 }
