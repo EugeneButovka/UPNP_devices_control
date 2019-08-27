@@ -13,7 +13,7 @@ import {
     Body,
     Icon} from "native-base";
 
-import DeviceControl from "./components/DeviceControl";
+import UpnpControlHub from "./components/UpnpControlHub";
 
 export default function App() {
     return (
@@ -32,12 +32,12 @@ export default function App() {
                     }}
           >
             <Right>
-              <Title>UPnP control Hub!!</Title>
+              <Title>UPnP control Hub!</Title>
             </Right>
           </Body>
         </Header>
         <Content>
-          <DeviceControl />
+          <UpnpControlHub />
         </Content>
         <Footer>
           <FooterTab>
