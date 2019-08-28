@@ -8,58 +8,11 @@ import PlayerControlHub from "./PlayerControlHub";
 
 
 
-
-class PlayerService {
-    soap = "";
-    
-    params = {};
-    
-    constructor() {
-        this.soap += '<?xml version="1.0" encoding="utf-8"?>';
-        this.soap += "<s:Envelope";
-        this.soap +=
-            '  s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"';
-        this.soap += '  xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">';
-        this.soap += "  <s:Body>";
-        this.soap +=
-            '          <u:Next xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">';
-        this.soap += "               <InstanceID>0</InstanceID>";
-        this.soap += "          </u:Next>";
-        this.soap += "  </s:Body>";
-        this.soap += "</s:Envelope>";
-        
-        this.params = {
-            url:
-                "http://192.168.1.149:1176/AVTransport/a1467806-f66a-2b56-9b3e-c00a7b7cbaa5/control.xml",
-            soap: this.soap
-        };
-    }
-    
-    nextTrack() {
-        upnp.invokeAction(this.params, (err, obj, xml, res) => {
-            if (err) {
-                console.log("[ERROR]");
-                console.dir(err);
-            } else {
-                if (res.statusCode === 200) {
-                    console.log("[SUCCESS]");
-                } else {
-                    console.log("[ERROR]");
-                }
-                console.log("----------------------------------");
-                // console.log(JSON.stringify(obj, null, '  '))
-            }
-        });
-    }
-}
-
 export default class UpnpControlHub extends React.Component {
     state = {};
     
     constructor(props) {
         super(props);
-        
-        this.player = new PlayerService();
         
         this.state = {
             discoveredDevices: [],
@@ -76,7 +29,7 @@ export default class UpnpControlHub extends React.Component {
     getDeviceType(device) {
         //"urn:schemas-upnp-org:device:DimmableLight:1";
         
-        const deviceTypeExpanded = device.description.device.deviceType
+        const deviceTypeExpanded = device.description.device.deviceType;
         const deviceType = deviceTypeExpanded.substring(
             deviceTypeExpanded.lastIndexOf("device:") + "device:".length,
             deviceTypeExpanded.lastIndexOf(":")

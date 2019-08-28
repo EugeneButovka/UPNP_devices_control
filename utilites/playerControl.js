@@ -2,10 +2,11 @@ import upnp from "./upnpUtils";
 
 export default class playerControl {
     networkAddress = "";
-    switchControlSubAddress = "AVTransport/a1467806-f66a-2b56-9b3e-c00a7b7cbaa5/control.xml";
+    controlSubAddress = "";
     
-    constructor(networkAddress) {
+    constructor(networkAddress, controlSubAddress) {
         this.networkAddress = networkAddress;
+        this.controlSubAddress = controlSubAddress;
     }
     
     
@@ -23,7 +24,7 @@ export default class playerControl {
         `;
         
         const params = {
-            url: this.networkAddress + '/' + this.switchControlSubAddress,
+            url: this.networkAddress + '/' + this.controlSubAddress,
             soap: soap
         };
         

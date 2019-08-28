@@ -29,9 +29,29 @@ export default class PlayerControlHub extends React.Component {
         return str;
     }
     
+    getAVTransportControlUrl(device) {
+        //"urn:schemas-upnp-org:service:AVTransport:1";
+        
+        const serviceListArray = device.description.device.serviceList.service;
+        let AVTransportControlUrl = null;
+        serviceListArray.forEach(service => {
+            const serviceType = service.serviceType.substring(
+                service.serviceType.lastIndexOf("service:") + "service:".length,
+                service.serviceType.lastIndexOf(":")
+            );
+            if (serviceType === 'AVTransport') AVTransportControlUrl = service.controlURL;
+        });
+        
+        console.log('AVTransportControlUrl', AVTransportControlUrl);
+        return AVTransportControlUrl;
+    }
+    
     setCurrentPlayerControl = (device) => {
+        const playerControlNetworkAddress = this.getDeviceNetworkAddress(device);
+        const playerAVTransportControlSubAddress = this.getAVTransportControlUrl(device);
+        
         this.setState({
-            currentPlayerControl: new playerControl(this.getDeviceNetworkAddress(device))
+            currentPlayerControl: new playerControl(playerControlNetworkAddress, playerAVTransportControlSubAddress)
         });
     };
     

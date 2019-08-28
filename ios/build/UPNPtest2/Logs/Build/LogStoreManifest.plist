@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>A8EC5180-7CE7-4861-BD0F-974F6F681FF8</key>
+		<key>4090402E-B2A2-4598-A86D-958439F3EF07</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,7 +15,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>A8EC5180-7CE7-4861-BD0F-974F6F681FF8.xcactivitylog</string>
+			<string>4090402E-B2A2-4598-A86D-958439F3EF07.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
@@ -30,15 +30,15 @@
 			<key>signature</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>588606430.13765705</real>
+			<real>588684485.09362698</real>
 			<key>timeStoppedRecording</key>
-			<real>588606430.78894699</real>
+			<real>588684485.960199</real>
 			<key>title</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>A8EC5180-7CE7-4861-BD0F-974F6F681FF8</string>
+			<string>4090402E-B2A2-4598-A86D-958439F3EF07</string>
 		</dict>
-		<key>C296921A-F881-4862-8DC8-144690A7733A</key>
+		<key>79F6129B-73AF-44C4-98EC-A245744A305C</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -47,7 +47,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>C296921A-F881-4862-8DC8-144690A7733A.xcactivitylog</string>
+			<string>79F6129B-73AF-44C4-98EC-A245744A305C.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
@@ -62,13 +62,13 @@
 			<key>signature</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>588609286.07750106</real>
+			<real>588680262.92449796</real>
 			<key>timeStoppedRecording</key>
-			<real>588609287.03891802</real>
+			<real>588680263.801121</real>
 			<key>title</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>C296921A-F881-4862-8DC8-144690A7733A</string>
+			<string>79F6129B-73AF-44C4-98EC-A245744A305C</string>
 		</dict>
 	</dict>
 </dict>
