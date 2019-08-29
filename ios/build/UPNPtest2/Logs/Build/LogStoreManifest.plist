@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>4090402E-B2A2-4598-A86D-958439F3EF07</key>
+		<key>459E4CF7-4451-4998-A05F-6CB92B798740</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,11 +15,11 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>4090402E-B2A2-4598-A86D-958439F3EF07.xcactivitylog</string>
+			<string>459E4CF7-4451-4998-A05F-6CB92B798740.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
-				<string>W</string>
+				<string>E</string>
 			</dict>
 			<key>schemeIdentifier-containerName</key>
 			<string>UPNPtest2 project</string>
@@ -30,45 +30,13 @@
 			<key>signature</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>588684485.09362698</real>
+			<real>588771602.04782104</real>
 			<key>timeStoppedRecording</key>
-			<real>588684485.960199</real>
+			<real>588771602.20023298</real>
 			<key>title</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>4090402E-B2A2-4598-A86D-958439F3EF07</string>
-		</dict>
-		<key>79F6129B-73AF-44C4-98EC-A245744A305C</key>
-		<dict>
-			<key>className</key>
-			<string>IDECommandLineBuildLog</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
-			<key>fileName</key>
-			<string>79F6129B-73AF-44C4-98EC-A245744A305C.xcactivitylog</string>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>W</string>
-			</dict>
-			<key>schemeIdentifier-containerName</key>
-			<string>UPNPtest2 project</string>
-			<key>schemeIdentifier-schemeName</key>
-			<string>UPNPtest2</string>
-			<key>schemeIdentifier-sharedScheme</key>
-			<integer>1</integer>
-			<key>signature</key>
-			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
-			<key>timeStartedRecording</key>
-			<real>588680262.92449796</real>
-			<key>timeStoppedRecording</key>
-			<real>588680263.801121</real>
-			<key>title</key>
-			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
-			<key>uniqueIdentifier</key>
-			<string>79F6129B-73AF-44C4-98EC-A245744A305C</string>
+			<string>459E4CF7-4451-4998-A05F-6CB92B798740</string>
 		</dict>
 	</dict>
 </dict>
