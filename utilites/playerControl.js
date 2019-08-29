@@ -51,7 +51,7 @@ export default class playerControl {
 			soap: soap
 		};
 		
-		//console.log('params', params);
+		console.log('action params', JSON.stringify(params));
 		
 		upnp.invokeAction(params, (err, obj, xml, res) => {
 			if (err) {

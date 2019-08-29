@@ -43,8 +43,12 @@ export default class PlayerControlHub extends React.Component {
 		const serviceListArray = device.description.device.serviceList.service;
 		let AVTransportControlUrl = null;
 		serviceListArray.forEach(service => {
-				if (this.getServiceType(service) === 'AVTransport') AVTransportControlUrl = service.controlURL.replace(/^\//, ''); // remove starting '/' if present
-				//console.log('service', service);
+				if (this.getServiceType(service) === 'AVTransport')
+				{
+					AVTransportControlUrl = service.controlURL.replace(/^\//, '');// remove starting '/' if present
+					console.log('service AVTransportControlUrl', AVTransportControlUrl);
+				}
+				
 			}
 		);
 		
@@ -81,8 +85,7 @@ export default class PlayerControlHub extends React.Component {
 	onPlayerSelectValue = (value) => {
 		//values of Picker items are unique devices .LOCATIONs
 		const devices = this.props.playerDevices.filter((device) => device.headers.LOCATION === value);
-		console.log('devices', devices);
-		console.log('devices', devices);
+		console.log('devices', JSON.stringify(devices));
 		const device = devices[0];
 		this.setState({
 			pickerSelectedValue: device.headers.LOCATION

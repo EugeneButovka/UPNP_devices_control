@@ -38,6 +38,38 @@
 			<key>uniqueIdentifier</key>
 			<string>459E4CF7-4451-4998-A05F-6CB92B798740</string>
 		</dict>
+		<key>F55323FE-59ED-4D67-8D4E-22BC562FF962</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>F55323FE-59ED-4D67-8D4E-22BC562FF962.xcactivitylog</string>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>UPNPtest2 project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>UPNPtest2</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>588782689.347489</real>
+			<key>timeStoppedRecording</key>
+			<real>588782695.30908203</real>
+			<key>title</key>
+			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>F55323FE-59ED-4D67-8D4E-22BC562FF962</string>
+		</dict>
 	</dict>
 </dict>
 </plist>
