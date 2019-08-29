@@ -81,6 +81,13 @@ export default class UpnpControlHub extends React.Component {
                         item.headers.LOCATION !== device.headers.LOCATION &&
                         item.description.device.friendlyName !== device.description.device.friendlyName
                 )});
+	        this.setState({lightDevices: []});
+	        this.setState({playerDevices: []});
+	
+	        this.state.discoveredDevices.forEach((device) => {
+		        if (this.isLightDevice(device)) this.setState({lightDevices: [...this.state.lightDevices, device]});
+		        if (this.isMediaRendererDevice(device)) this.setState({playerDevices: [...this.state.playerDevices, device]});
+	        });
         });
         
         

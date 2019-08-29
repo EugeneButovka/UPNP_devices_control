@@ -24,7 +24,9 @@ export default class PlayerControlHub extends React.Component {
 	
 	getDeviceNetworkAddress(device) {
 		//console.log('try get device network address', device);
-		const str = device.headers.LOCATION.match(/^(http|https)[\s\S]+(?=\/)/i)[0];
+		const str = device.headers.LOCATION.match(/^(?:(http[s]?|ftp[s]):\/\/)?([^:\/\s]+)(:[0-9]+)/i)[0];//<-new ok, OLD buggy: (/^(http|https)[\s\S]+(?=\/)/i)[0];
+		//const port = device.headers.LOCATION.match(/(?:\:\d{2,4})/ig)[0];
+		
 		console.log('LOCATION', str);
 		return str;
 	}

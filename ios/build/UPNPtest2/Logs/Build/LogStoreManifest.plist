@@ -6,7 +6,7 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>459E4CF7-4451-4998-A05F-6CB92B798740</key>
+		<key>16249ED6-F65D-4AA9-B179-AB28AB139C9C</key>
 		<dict>
 			<key>className</key>
 			<string>IDECommandLineBuildLog</string>
@@ -15,39 +15,7 @@
 			<key>domainType</key>
 			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
 			<key>fileName</key>
-			<string>459E4CF7-4451-4998-A05F-6CB92B798740.xcactivitylog</string>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>E</string>
-			</dict>
-			<key>schemeIdentifier-containerName</key>
-			<string>UPNPtest2 project</string>
-			<key>schemeIdentifier-schemeName</key>
-			<string>UPNPtest2</string>
-			<key>schemeIdentifier-sharedScheme</key>
-			<integer>1</integer>
-			<key>signature</key>
-			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
-			<key>timeStartedRecording</key>
-			<real>588771602.04782104</real>
-			<key>timeStoppedRecording</key>
-			<real>588771602.20023298</real>
-			<key>title</key>
-			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
-			<key>uniqueIdentifier</key>
-			<string>459E4CF7-4451-4998-A05F-6CB92B798740</string>
-		</dict>
-		<key>F55323FE-59ED-4D67-8D4E-22BC562FF962</key>
-		<dict>
-			<key>className</key>
-			<string>IDECommandLineBuildLog</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
-			<key>fileName</key>
-			<string>F55323FE-59ED-4D67-8D4E-22BC562FF962.xcactivitylog</string>
+			<string>16249ED6-F65D-4AA9-B179-AB28AB139C9C.xcactivitylog</string>
 			<key>primaryObservable</key>
 			<dict>
 				<key>highLevelStatus</key>
@@ -62,13 +30,45 @@
 			<key>signature</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>timeStartedRecording</key>
-			<real>588782689.347489</real>
+			<real>588784189.52343404</real>
 			<key>timeStoppedRecording</key>
-			<real>588782695.30908203</real>
+			<real>588784198.51787996</real>
 			<key>title</key>
 			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
 			<key>uniqueIdentifier</key>
-			<string>F55323FE-59ED-4D67-8D4E-22BC562FF962</string>
+			<string>16249ED6-F65D-4AA9-B179-AB28AB139C9C</string>
+		</dict>
+		<key>769F7AA3-9A03-435F-BFE6-D1E2B469BE8A</key>
+		<dict>
+			<key>className</key>
+			<string>IDECommandLineBuildLog</string>
+			<key>documentTypeString</key>
+			<string>&lt;nil&gt;</string>
+			<key>domainType</key>
+			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
+			<key>fileName</key>
+			<string>769F7AA3-9A03-435F-BFE6-D1E2B469BE8A.xcactivitylog</string>
+			<key>primaryObservable</key>
+			<dict>
+				<key>highLevelStatus</key>
+				<string>W</string>
+			</dict>
+			<key>schemeIdentifier-containerName</key>
+			<string>UPNPtest2 project</string>
+			<key>schemeIdentifier-schemeName</key>
+			<string>UPNPtest2</string>
+			<key>schemeIdentifier-sharedScheme</key>
+			<integer>1</integer>
+			<key>signature</key>
+			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
+			<key>timeStartedRecording</key>
+			<real>588786062.46975505</real>
+			<key>timeStoppedRecording</key>
+			<real>588786063.20596397</real>
+			<key>title</key>
+			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
+			<key>uniqueIdentifier</key>
+			<string>769F7AA3-9A03-435F-BFE6-D1E2B469BE8A</string>
 		</dict>
 	</dict>
 </dict>
