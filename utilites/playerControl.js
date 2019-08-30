@@ -4,41 +4,51 @@ export default class playerControl {
 	networkAddress = "";
 	controlSubAddress = ""; //AVTransport service sub address
 	
-	constructor(networkAddress, controlSubAddress) {
+	constructor(networkAddress, servicesUrls) {
 		this.networkAddress = networkAddress;
-		this.controlSubAddress = controlSubAddress;
+		this.servicesUrls = servicesUrls;
 	}
 	
 	
 	pauseTrack() {
-		this.performPlaybackControlAction("Pause");
+		this.performPlayerControlAction("Pause");
 	}
 	
 	playTrack() {
 		const param = `<Speed>1</Speed>`;
 		
-		this.performPlaybackControlAction("Play", param);
+		this.performPlayerControlAction("Play", param);
 	}
 	
 	
 	nextTrack() {
-		this.performPlaybackControlAction("Next");
+		this.performPlayerControlAction("Next");
 	}
 	
 	setAVTransportURI(uri) {
 		const param = `<CurrentURI>${uri}</CurrentURI>
                        <CurrentURIMetaData />`;
 		
-		this.performPlaybackControlAction("SetAVTransportURI", param);
+		this.performPlayerControlAction("SetAVTransportURI", param);
 	}
 	
-	performPlaybackControlAction(action, parameter = '') {
+	getTransportInfo() {
+		this.performPlayerControlAction("GetTransportInfo");
+	}
+	
+	getVolume() {
+		const param = `<Channel>Master</Channel>`;
+		
+		this.performPlayerControlAction("GetVolume", param, "RenderingControl");
+	}
+	
+	performPlayerControlAction(action, parameter = '', service = "AVTransport") {
 		const soap = `<?xml version="1.0" encoding="utf-8"?>
             <s:Envelope
                 s:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
                 xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
                     <s:Body>
-                        <u:${action} xmlns:u="urn:schemas-upnp-org:service:AVTransport:1">
+                        <u:${action} xmlns:u="urn:schemas-upnp-org:service:${service}:1">
                             <InstanceID>0</InstanceID>
                             ${parameter}
                         </u:${action}>
@@ -47,7 +57,7 @@ export default class playerControl {
         `;
 		
 		const params = {
-			url: this.networkAddress + '/' + this.controlSubAddress,
+			url: this.networkAddress + '/' + this.servicesUrls[service],
 			soap: soap
 		};
 		
@@ -57,6 +67,7 @@ export default class playerControl {
 			if (err) {
 				console.log("[ERROR]");
 				console.dir(err);
+				return err;
 			} else {
 				if (res.statusCode === 200) {
 					console.log("[SUCCESS]");
@@ -64,6 +75,8 @@ export default class playerControl {
 					console.log("[ERROR]");
 				}
 				console.log("----------------------------------");
+				console.log("response object: ",JSON.stringify(obj));
+				return obj;
 			}
 		});
 	}

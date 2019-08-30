@@ -45,25 +45,47 @@ export default class PlayerControlHub extends React.Component {
 		const serviceListArray = device.description.device.serviceList.service;
 		let AVTransportControlUrl = null;
 		serviceListArray.forEach(service => {
-				if (this.getServiceType(service) === 'AVTransport')
-				{
+				if (this.getServiceType(service) === 'AVTransport') {
 					AVTransportControlUrl = service.controlURL.replace(/^\//, '');// remove starting '/' if present
 					console.log('service AVTransportControlUrl', AVTransportControlUrl);
 				}
 				
 			}
 		);
-		
 		//console.log('AVTransportControlUrl', AVTransportControlUrl);
 		return AVTransportControlUrl;
+	}
+	
+	getRenderingControlUrl(device) {
+		//"urn:schemas-upnp-org:service:AVTransport:1";
+		
+		const serviceListArray = device.description.device.serviceList.service;
+		let RenderingControlUrl = null;
+		serviceListArray.forEach(service => {
+				//console.log('service', service);
+				if (this.getServiceType(service) === 'RenderingControl') {
+					RenderingControlUrl = service.controlURL.replace(/^\//, '');// remove starting '/' if present
+					console.log('service RenderingControlURL', RenderingControlUrl);
+				}
+				
+			}
+		);
+		//console.log('AVTransportControlUrl', AVTransportControlUrl);
+		return RenderingControlUrl;
 	}
 	
 	setCurrentPlayerControl = (device) => {
 		const playerControlNetworkAddress = this.getDeviceNetworkAddress(device);
 		const playerAVTransportControlSubAddress = this.getAVTransportControlUrl(device);
+		const playerRenderingControlSubAddress = this.getRenderingControlUrl(device);
+		
+		const servicesUrls = {
+			"AVTransport": playerAVTransportControlSubAddress,
+			"RenderingControl": playerRenderingControlSubAddress
+		};
 		
 		this.setState({
-			currentPlayerControl: new playerControl(playerControlNetworkAddress, playerAVTransportControlSubAddress)
+			currentPlayerControl: new playerControl(playerControlNetworkAddress, servicesUrls)
 		});
 	};
 	
@@ -82,6 +104,14 @@ export default class PlayerControlHub extends React.Component {
 	
 	sendTrack = () => {
 		this.state.currentPlayerControl.setAVTransportURI('https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3');
+	};
+	
+	getPlayerInfo = () => {
+		this.state.currentPlayerControl.getTransportInfo();
+	};
+	
+	getPlayerVolume = () => {
+		this.state.currentPlayerControl.getVolume();
 	};
 	
 	onPlayerSelectValue = (value) => {
@@ -120,23 +150,35 @@ export default class PlayerControlHub extends React.Component {
 	renderControlButtons = () => {
 		if (this.state.currentPlayerControl !== null)
 			return (
-				<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-					<Button onPress={this.pauseTrack}>
-						<Text>Pause</Text>
-					</Button>
-					<Button onPress={this.playTrack}>
-						<Text>Play</Text>
-					</Button>
-					<Button onPress={this.nextTrack}>
-						<Text>Next</Text>
-					</Button>
-					<Button onPress={this.sendTrack}>
-						<Text>SendTrack</Text>
-					</Button>
-				</View>
+				<React.Fragment>
+					<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+						<Button onPress={this.pauseTrack}>
+							<Text>Pause</Text>
+						</Button>
+						<Button onPress={this.playTrack}>
+							<Text>Play</Text>
+						</Button>
+						<Button onPress={this.nextTrack}>
+							<Text>Next</Text>
+						</Button>
+						<Button onPress={this.sendTrack}>
+							<Text>SendTrack</Text>
+						</Button>
+					
+					</View>
+					<View>
+						<Button onPress={this.getPlayerInfo}>
+							<Text>Info</Text>
+						</Button>
+						<Button onPress={this.getPlayerVolume}>
+							<Text>Volume</Text>
+						</Button>
+					</View>
+				</React.Fragment>
 			);
 		else
 			return (
+				<React.Fragment>
 				<View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 					<Button disabled>
 						<Text>Pause</Text>
@@ -151,6 +193,15 @@ export default class PlayerControlHub extends React.Component {
 						<Text>SendTrack</Text>
 					</Button>
 				</View>
+				<View>
+					<Button disabled>
+						<Text>Info</Text>
+					</Button>
+					<Button disabled>
+						<Text>Volume</Text>
+					</Button>
+				</View>
+				</React.Fragment>
 			);
 	};
 	

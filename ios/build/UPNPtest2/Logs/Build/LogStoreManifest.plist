@@ -6,38 +6,6 @@
 	<integer>10</integer>
 	<key>logs</key>
 	<dict>
-		<key>16249ED6-F65D-4AA9-B179-AB28AB139C9C</key>
-		<dict>
-			<key>className</key>
-			<string>IDECommandLineBuildLog</string>
-			<key>documentTypeString</key>
-			<string>&lt;nil&gt;</string>
-			<key>domainType</key>
-			<string>Xcode.IDEActivityLogDomainType.BuildLog</string>
-			<key>fileName</key>
-			<string>16249ED6-F65D-4AA9-B179-AB28AB139C9C.xcactivitylog</string>
-			<key>primaryObservable</key>
-			<dict>
-				<key>highLevelStatus</key>
-				<string>W</string>
-			</dict>
-			<key>schemeIdentifier-containerName</key>
-			<string>UPNPtest2 project</string>
-			<key>schemeIdentifier-schemeName</key>
-			<string>UPNPtest2</string>
-			<key>schemeIdentifier-sharedScheme</key>
-			<integer>1</integer>
-			<key>signature</key>
-			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
-			<key>timeStartedRecording</key>
-			<real>588784189.52343404</real>
-			<key>timeStoppedRecording</key>
-			<real>588784198.51787996</real>
-			<key>title</key>
-			<string>Building workspace UPNPtest2 with scheme UPNPtest2 and configuration Debug</string>
-			<key>uniqueIdentifier</key>
-			<string>16249ED6-F65D-4AA9-B179-AB28AB139C9C</string>
-		</dict>
 		<key>769F7AA3-9A03-435F-BFE6-D1E2B469BE8A</key>
 		<dict>
 			<key>className</key>
